@@ -7,7 +7,6 @@ RUN chmod u+x /entrypoint.sh \
 
 COPY config.js /config-example.js
 COPY storage.js /usr/src/ghost/content/storage/ghost-s3/index.js
-COPY theme/ /usr/src/ghost/content/themes/tegud
 
 ENTRYPOINT ["/entrypoint.sh"]
 
