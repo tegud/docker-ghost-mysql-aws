@@ -1,4 +1,4 @@
-FROM ghost:0.11.8-alpine
+FROM ghost:0.11.8
 
 COPY docker-entrypoint.sh /entrypoint.sh
 RUN chmod u+x /entrypoint.sh \
