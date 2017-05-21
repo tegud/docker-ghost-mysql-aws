@@ -2,9 +2,10 @@ FROM ghost:0.11.8
 
 COPY docker-entrypoint.sh /entrypoint.sh
 RUN chmod u+x /entrypoint.sh \
-    && npm install ghost-storage-adapter-s3 \
-    && mkdir -p ./content/storage \
-    && cp -r ./node_modules/ghost-storage-adapter-s3 ./content/storage/s3
+  && mkdir -p /usr/src/ghost/content/storage \
+  && npm install ghost-s3-compat \
+  && npm install lodash \
+  && cp -r /usr/src/ghost/node_modules/ghost-s3-compat /usr/src/ghost/content/storage/ghost-s3
 
 COPY config.js /config-example.js
 
