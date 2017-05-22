@@ -13,36 +13,36 @@ config = {
                 service: 'Mailgun',
                 auth: {
                     user: process.env.EmailUserName, // mailgun username
-                    pass: process.env.EmailPassword  // mailgun password
+                    pass: process.env.EmailPassword // mailgun password
                 }
             }
         },
         database: {
             client: 'mysql',
             connection: {
-                host     : 'mysql',
-                user     : 'GHOST_USER',
-                password : 'GHOST_PASSWORD',
-                database : 'GHOST_DB',
-                charset  : 'utf8'
+                host: 'mysql',
+                user: 'GHOST_USER',
+                password: 'GHOST_PASSWORD',
+                database: 'GHOST_DB',
+                charset: 'utf8'
             }
         },
         storage: {
-          active: 'ghost-s3',
-          'ghost-s3': {
-            accessKeyId: process.env.AWS_KEY,
-            secretAccessKey: process.env.AWS_SECRET,
-            bucket: process.env.AWS_BUCKET,
-            region: process.env.AWS_REGION
-          }
-        },
+            active: 's3',
+            s3: {
+                accessKeyId: process.env.AWS_KEY,
+                bucket: process.env.AWS_BUCKET,
+                region: process.env.AWS_REGION,
+                secretAccessKey: process.env.AWS_SECRET
+            }
+        }
         server: {
             host: '0.0.0.0',
             port: '2368'
         },
-      	paths: {
-      	    contentPath: path.join(__dirname, '/content/')
-      	}
+        paths: {
+            contentPath: path.join(__dirname, '/content/')
+        }
     }
 };
 
