@@ -35,7 +35,7 @@ config = {
                 region: process.env.AWS_REGION,
                 secretAccessKey: process.env.AWS_SECRET
             }
-        }
+        },
         server: {
             host: '0.0.0.0',
             port: '2368'
