@@ -27,15 +27,6 @@ config = {
                 charset: 'utf8'
             }
         },
-        storage: {
-            active: 's3',
-            s3: {
-                accessKeyId: process.env.AWS_KEY,
-                bucket: process.env.AWS_BUCKET,
-                region: process.env.AWS_REGION,
-                secretAccessKey: process.env.AWS_SECRET
-            }
-        },
         server: {
             host: '0.0.0.0',
             port: '2368'
