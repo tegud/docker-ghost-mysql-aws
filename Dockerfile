@@ -58,21 +58,9 @@ EXPOSE 2368
 
 COPY docker-entrypoint.sh /entrypoint.sh
 RUN chmod u+x /entrypoint.sh \
-  && mkdir -p /usr/src/ghost/content/storage \
-  && npm install ghost-storage-adapter-s3 \
-  && cp -r ./node_modules/ghost-storage-adapter-s3 ./content/storage/s3
+  && mkdir -p /usr/src/ghost/content/storage 
 
 COPY config.js /config-example.js
-COPY storage.js /usr/src/ghost/content/storage/s3/index.js
-
-WORKDIR /usr/src/ghost/content/storage/s3
-
-RUN npm install aws-sdk \
-    && npm install bluebird \
-    && chmod a+x /usr/src/ghost/core/server/storage \
-    && chmod a+x /usr/src/ghost/core/server/storage/base.js \
-    && chown -R root:root /usr/src/ghost/
-
 WORKDIR /usr/src/ghost/
 
 ENTRYPOINT ["/entrypoint.sh"]
