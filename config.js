@@ -2,11 +2,11 @@ var path = require('path'),
     config;
 
 config = {
-    url: 'http://blog.example.com',
     // ### Production
     // When running Ghost in the wild, use the production environment.
     // Configure your URL and mail settings here
     production: {
+        url: 'http://blog.example.com',
         database: {
             client: 'mysql',
             connection: {
