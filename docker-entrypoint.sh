@@ -17,6 +17,7 @@ if [ ! -e "$GHOST_CONTENT/apps" ]; then
 				s/GHOST_DB/$GHOST_DB/g;
 				s/GHOST_USER/$GHOST_USER/g;
 				s/GHOST_PASSWORD/$GHOST_PASSWORD/g;
+				s/GHOST_DB_HOST/$GHOST_DB_HOST/g;
 				s!path.join\(__dirname, (.)/content!path.join(process.env.GHOST_CONTENT, \1!g;
 			" "/config-example.js" > "$GHOST_CONTENT/config.js"
 		fi
