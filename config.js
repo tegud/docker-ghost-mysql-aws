@@ -8,7 +8,7 @@ config = {
     production: {
         url: 'http://blog.example.com',
         database: {
-            client: 'mysql'Z,
+            client: 'mysql',
             connection: {
                 host: process.env.GHOST_DB_HOST,
                 user: 'GHOST_USER',
