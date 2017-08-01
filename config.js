@@ -10,7 +10,7 @@ config = {
         database: {
             client: 'mysql',
             connection: {
-                host: process.env.GHOST_DB_HOST,
+                host: 'GHOST_DB_HOST',
                 user: 'GHOST_USER',
                 password: 'GHOST_PASSWORD',
                 database: 'GHOST_DB',
