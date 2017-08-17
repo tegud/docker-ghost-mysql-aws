@@ -66,7 +66,10 @@ RUN chmod u+x /entrypoint.sh \
 COPY config.js /config-example.js
 COPY storage.js /usr/src/ghost/content/storage/gcloud/index.js
 
-RUN chmod a+x /usr/src/ghost/core/server/storage \
+RUN npm install gcloud \
+	&& npm install util \
+    && npm install bluebird \
+    && chmod a+x /usr/src/ghost/core/server/storage \
     && chmod a+x /usr/src/ghost/core/server/storage/base.js \
     && chown -R root:root /usr/src/ghost/
 
