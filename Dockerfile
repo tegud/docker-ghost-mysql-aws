@@ -56,15 +56,15 @@ RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 
 EXPOSE 2368
 
+WORKDIR /usr/src/ghost/
+
 COPY docker-entrypoint.sh /entrypoint.sh
 RUN chmod u+x /entrypoint.sh \
   && mkdir -p /usr/src/ghost/content/storage \
-  && npm install ghost-google-cloud-storage 
+  && npm install ghost-google-cloud-storage
 
 COPY config.js /config-example.js
 COPY storage.js /usr/src/ghost/content/storage/gcloud/index.js
-
-WORKDIR /usr/src/ghost/
 
 ENTRYPOINT ["/entrypoint.sh"]
 
