@@ -18,7 +18,7 @@ ENV PYTHON_VERSION 2.7.13
 RUN set -ex \
 	&& buildDeps=' \
 		dpkg-dev \
-		build-essentials \
+		build-essential \
 		tcl-dev \
 		tk-dev \
 	' \
