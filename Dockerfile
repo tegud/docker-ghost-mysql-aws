@@ -68,10 +68,7 @@ COPY storage.js /usr/src/ghost/content/storage/gcloud/index.js
 
 RUN npm install gcloud \
 	&& npm install util \
-    && npm install bluebird \
-    && chmod a+x /usr/src/ghost/core/server/storage \
-    && chmod a+x /usr/src/ghost/core/server/storage/base.js \
-    && chown -R root:root /usr/src/ghost/
+    && npm install bluebird 
 
 ENTRYPOINT ["/entrypoint.sh"]
 
