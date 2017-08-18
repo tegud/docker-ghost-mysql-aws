@@ -18,12 +18,11 @@ ENV PYTHON_VERSION 2.7.13
 RUN set -ex \
 	&& buildDeps=' \
 		dpkg-dev \
-		build-essential \
 		tcl-dev \
 		tk-dev \
 	' \
 	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
-	\
+	&& apt-get install -y build-essential \
 	&& wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
 	&& wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
 	&& export GNUPGHOME="$(mktemp -d)" \
