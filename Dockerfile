@@ -50,8 +50,8 @@ COPY storage.js /usr/src/ghost/content/storage/gcloud/index.js
 RUN npm install gcloud \
 	&& npm install util \
     && npm install bluebird \
-	&&	apt-get purge -y --auto-remove $buildDeps; \
-	&&	npm cache clean; \
+	&&	apt-get purge -y --auto-remove $buildDeps \
+	&&	npm cache clean \
 	&&	rm -rf /tmp/npm*
 
 ENTRYPOINT ["/entrypoint.sh"]
