@@ -21,8 +21,8 @@ RUN set -ex \
 		tcl-dev \
 		tk-dev \
 	' \
-	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
-	&& apt-get install -y build-essential \
+	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && apt-get install -y build-essential && rm -rf /var/lib/apt/lists/* \
+	 \
 	&& wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
 	&& wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
 	&& export GNUPGHOME="$(mktemp -d)" \
