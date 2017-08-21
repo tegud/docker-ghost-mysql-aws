@@ -1,5 +1,7 @@
 'use strict';
 
+console.log(`CURRENT LOCATION === "${__dirname}"`);
+
 var fs          = require('fs'),
     path        = require('path'),
     Promise     = require('bluebird'),
