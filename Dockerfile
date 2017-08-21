@@ -39,11 +39,11 @@ RUN set -ex; \
 
 ENV GHOST_CONTENT /var/lib/ghost
 RUN mkdir -p "$GHOST_CONTENT" \
-	&& chown -R user:user "$GHOST_CONTENT" \
+        && chown -R user:user "$GHOST_CONTENT" \
 # Ghost expects "config.js" to be in $GHOST_SOURCE, but it's more useful for
 # image users to manage that as part of their $GHOST_CONTENT volume, so we
 # symlink.
-	&& ln -s "$GHOST_CONTENT/config.js" "$GHOST_SOURCE/config.js"
+        && ln -s "$GHOST_CONTENT/config.js" "$GHOST_SOURCE/config.js"
 VOLUME $GHOST_CONTENT
 
 COPY docker-entrypoint.sh /usr/local/bin/
@@ -55,17 +55,20 @@ WORKDIR /usr/src/ghost/
 
 COPY docker-entrypoint.sh /entrypoint.sh
 RUN chmod u+x /entrypoint.sh \
-  && mkdir -p /usr/src/ghost/content/storage
+  && mkdir -p /usr/src/ghost/content/storage \
+  && npm i ghost-google-cloud-storage
 
 COPY config.js /config-example.js
-COPY storage.js /usr/src/ghost/content/storage/gcloud/index.js
 
 WORKDIR /usr/src/ghost/content/storage/gcloud
 
-RUN npm install gcloud util bluebird \
+RUN  cp -r /usr/src/ghost/node_modules/ghost-google-cloud-storage/* /usr/src/ghost/content/storage/gcloud \
+    && npm install gcloud util bluebird \
     && chmod a+x /usr/src/ghost/core/server/storage \
     && chmod a+x /usr/src/ghost/core/server/storage/base.js \
     && chown -R root:root /usr/src/ghost/
+
+COPY storage.js /usr/src/ghost/content/storage/gcloud/index.js
 
 WORKDIR /usr/src/ghost/
 
