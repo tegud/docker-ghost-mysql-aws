@@ -7,9 +7,9 @@ var fs          = require('fs'),
     Promise     = require('bluebird'),
     util        = require('util'),
     gcloud      = require('gcloud'),
-    errors      = require('../../../core/server/errors'),
-    utils       = require('../../../core/server/utils'),
-    baseStore   = require('../../../core/server/storage/base'),
+    errors      = require('/usr/src/ghost/core/server/errors'),
+    utils       = require('/usr/src/ghost/core/server/utils'),
+    baseStore   = require('/usr/src/ghost/core/server/storage/base'),
     options     = {},
     bucket;
 
