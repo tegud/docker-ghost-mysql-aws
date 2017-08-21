@@ -47,9 +47,7 @@ RUN chmod u+x /entrypoint.sh \
 COPY config.js /config-example.js
 COPY storage.js /usr/src/ghost/content/storage/gcloud/index.js
 
-RUN npm install gcloud \
-	&& npm install util \
-    && npm install bluebird
+RUN npm install gcloud util bluebird
 
 ENTRYPOINT ["/entrypoint.sh"]
 
