@@ -21,7 +21,7 @@ config = {
             active: 'gcloud',
             'gcloud': {
                 projectId: 'api-project-274440984329',
-                key: './secrets/cloudstorage/assets.json', // if is in the ghost root folder just add the name of the file
+                key: '/usr/src/ghost/secrets/cloudstorage/assets.json', // if is in the ghost root folder just add the name of the file
                 bucket: 'ghost-assets'
             }
         },
