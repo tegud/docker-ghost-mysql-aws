@@ -1,9 +1,9 @@
-FROM node:6
-
-RUN groupadd user && useradd --create-home --home-dir /home/user -g user user
+# https://docs.ghost.org/supported-node-versions/
+# https://github.com/nodejs/LTS
+FROM node:6-slim
 
 # grab gosu for easy step-down from root
-ENV GOSU_VERSION 1.7
+ENV GOSU_VERSION 1.10
 RUN set -x \
 	&& wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
 	&& wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
@@ -14,67 +14,37 @@ RUN set -x \
 	&& chmod +x /usr/local/bin/gosu \
 	&& gosu nobody true
 
-ENV GHOST_SOURCE /usr/src/ghost
-WORKDIR $GHOST_SOURCE
+ENV NPM_CONFIG_LOGLEVEL warn
+ENV NODE_ENV production
+ENV GHOST_CLI_VERSION 1.1.2
+ENV GHOST_VERSION 1.12.1
 
-ENV GHOST_VERSION 0.11.10
+RUN npm install -g "ghost-cli@$GHOST_CLI_VERSION" knex-migrator@latest
+
+ENV GHOST_INSTALL /var/lib/ghost
+ENV GHOST_CONTENT /var/lib/ghost/content
 
 RUN set -ex; \
+	mkdir -p "$GHOST_INSTALL"; \
+	chown node:node "$GHOST_INSTALL"; \
 	\
-	buildDeps=' \
-		gcc \
-		make \
-		python \
-		unzip \
-	'; \
-	apt-get update; \
-	apt-get install -y $buildDeps --no-install-recommends; \
-	rm -rf /var/lib/apt/lists/*; \
+	gosu node ghost install "$GHOST_VERSION" --db sqlite3 --no-prompt --no-stack --no-setup --dir "$GHOST_INSTALL"; \
 	\
-	wget -O ghost.zip "https://github.com/TryGhost/Ghost/releases/download/${GHOST_VERSION}/Ghost-${GHOST_VERSION}.zip"; \
-	unzip ghost.zip; \
+# Tell Ghost to listen on all ips and not prompt for additional configuration
+	cd "$GHOST_INSTALL"; \
+	gosu node ghost config --ip 0.0.0.0 --port 2368 --no-prompt --db sqlite3 --url http://localhost:2368 --dbpath "$GHOST_CONTENT/data/ghost.db"; \
+	gosu node ghost config paths.contentPath "$GHOST_CONTENT"; \
 	\
-	npm install --production; \
-	\
-	apt-get purge -y --auto-remove $buildDeps; \
-	\
-	rm ghost.zip; \
-	npm cache clean; \
-	rm -rf /tmp/npm*
+# need to save initial content for pre-seeding empty volumes
+	mv "$GHOST_CONTENT" "$GHOST_INSTALL/content.orig"; \
+	mkdir -p "$GHOST_CONTENT"; \
+	chown node:node "$GHOST_CONTENT"
 
-ENV GHOST_CONTENT /var/lib/ghost
-RUN mkdir -p "$GHOST_CONTENT" \
-	&& chown -R user:user "$GHOST_CONTENT" \
-# Ghost expects "config.js" to be in $GHOST_SOURCE, but it's more useful for
-# image users to manage that as part of their $GHOST_CONTENT volume, so we
-# symlink.
-	&& ln -s "$GHOST_CONTENT/config.js" "$GHOST_SOURCE/config.js"
+WORKDIR $GHOST_INSTALL
 VOLUME $GHOST_CONTENT
 
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
+COPY docker-entrypoint.sh /usr/local/bin
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 2368
-
-COPY docker-entrypoint.sh /entrypoint.sh
-RUN chmod u+x /entrypoint.sh \
-  && mkdir -p /usr/src/ghost/content/storage \
-  && npm install ghost-storage-adapter-s3 \
-  && cp -r ./node_modules/ghost-storage-adapter-s3 ./content/storage/s3
-
-COPY config.js /config-example.js
-COPY storage.js /usr/src/ghost/content/storage/s3/index.js
-
-WORKDIR /usr/src/ghost/content/storage/s3
-
-RUN npm install aws-sdk \
-    && npm install bluebird \
-    && chmod a+x /usr/src/ghost/core/server/storage \
-    && chmod a+x /usr/src/ghost/core/server/storage/base.js \
-    && chown -R root:root /usr/src/ghost/
-
-WORKDIR /usr/src/ghost/
-
-ENTRYPOINT ["/entrypoint.sh"]
-
-CMD ["npm", "start", "--production"]
+CMD ["node", "current/index.js"]
