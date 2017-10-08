@@ -46,8 +46,8 @@ VOLUME $GHOST_CONTENT
 COPY docker-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
 	&& npm install ghost-storage-adapter-s3 \
-	&& mkdir -p /var/lib/ghost/content/adapters/storage \
-	&& cp -r ./node_modules/ghost-storage-adapter-s3 /var/lib/ghost/content/adapters/storage/s3
+	&& mkdir -p /var/lib/ghost/versions/1.12.1/content/adapters/storage \
+	&& cp -r ./node_modules/ghost-storage-adapter-s3 /var/lib/ghost/versions/1.12.1/content/adapters/storage/s3
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
