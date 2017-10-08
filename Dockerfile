@@ -47,8 +47,7 @@ COPY docker-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
 	&& npm install ghost-storage-adapter-s3 \
 	&& mkdir -p /var/lib/ghost/versions/1.12.1/core/server/adapters/storage/s3 \
-	&& ls -la ./node_modules/ghost-storage-adapter-s3 \
-	&& cp -r ./node_modules/ghost-storage-adapter-s3 /var/lib/ghost/versions/1.12.1/core/server/adapters/storage/s3
+	&& cp -r ./node_modules/ghost-storage-adapter-s3/* /var/lib/ghost/versions/1.12.1/core/server/adapters/storage/s3
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
