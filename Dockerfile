@@ -1,4 +1,4 @@
-FROM ghost:1.24.1
+FROM ghost:1.24.4
 
 RUN npm install ghost-storage-adapter-s3 \
 	&& mkdir -p /var/lib/ghost/versions/$(ls /var/lib/ghost/versions/)/core/server/adapters/storage/s3 \
